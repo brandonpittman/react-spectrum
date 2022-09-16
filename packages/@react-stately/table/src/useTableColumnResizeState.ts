@@ -43,6 +43,7 @@ export interface TableColumnResizeStateProps {
   onColumnResizeEnd?: (affectedColumnWidths: AffectedColumnWidths) => void,
   /** The default table width. */
   tableWidth?: number,
+  /** Called when column sizes change. If this is provided, you must trigger a React state update for a rerender as this bypasses an internal setState. */
   onResize?: () => void
 }
 
@@ -113,10 +114,9 @@ export function useTableColumnResizeState<T>(props: TableColumnResizeStateProps,
 
     return widths;
   }, [getStaticAndDynamicColumns, getResolvedColumnWidth]);
-
-
-  const prevColKeys = columnsRef.current.map(col => col.key);
+  
   useLayoutEffect(() => {
+    const prevColKeys = columnsRef.current.map(col => col.key);
     const colKeys = columns.map(col => col.key);
     if (prevColKeys.length !== colKeys.length || colKeys.some((col, i) => col !== prevColKeys[i])) {
       columnsRef.current = columns;
