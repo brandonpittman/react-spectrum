@@ -473,15 +473,12 @@ function TableVirtualizer({
   useLayoutEffect(() => {
     if (!isLoading && onLoadMore && !state.isAnimating) {
       if (prevContentSizeHeight.current > 0 && state.virtualizer.contentSize.height < state.virtualizer.visibleRect.height) {
-        // choosing
-        // - state.contentSize.height > 0 && state.contentSize.height // if height reduces (delete the page) then we want to load more
-        // - state.virtualizer.contentSize.height // not an entry in dependency array, so if we remove the state.contentSize, this won't work if we removed the dependency we aren't using
-        // - ref for initial render
-        // - ref to store content size from virtualizer and remove dependency array <-
         onLoadMore();
       }
     }
     prevContentSizeHeight.current = state.virtualizer.contentSize.height;
+    // run every render since we depend on state that we don't actually use in the effect, state.contentSize
+    // instead, we use state.virtualizer.contentSize because that is up to date when we run the effect
   });
 
   let keysBefore = [];
