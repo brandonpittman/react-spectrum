@@ -2,8 +2,7 @@
 import {ColumnProps} from '@react-types/table';
 import {getContentWidth, getDynamicColumnWidths, getMaxWidth, getMinWidth, isStatic, parseStaticWidth} from './utils';
 import {GridNode} from '@react-types/grid';
-import {Key, MutableRefObject, useCallback, useRef, useState} from 'react';
-import {useLayoutEffect} from '@react-aria/utils';
+import {Key, MutableRefObject, useCallback, useLayoutEffect, useRef, useState} from 'react';
 
 interface AffectedColumnWidth {
   /** The column key. */
@@ -114,7 +113,7 @@ export function useTableColumnResizeState<T>(props: TableColumnResizeStateProps,
 
     return widths;
   }, [getStaticAndDynamicColumns, getResolvedColumnWidth]);
-  
+
   useLayoutEffect(() => {
     const prevColKeys = columnsRef.current.map(col => col.key);
     const colKeys = columns.map(col => col.key);
