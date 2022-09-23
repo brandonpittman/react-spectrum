@@ -151,9 +151,9 @@ export interface DropTargetDelegate {
   getDropTargetFromPoint(x: number, y: number, isValidDropTarget: (target: DropTarget) => boolean): DropTarget | null
 }
 
-export interface DroppableCollectionProps {
+export interface UtilityOptions {
   /**
-   * The drag types that the droppable collection accepts. If the collection accepts directories, include 'directory' in your array of allowed types.
+   * The drag types that the droppable collection accepts. If directories are accepted, include the DIRECTORY_DRAG_TYPE from @react-aria/dnd or @react-spectrum/dnd in the array of allowed types.
    * @default 'all'
    */
   acceptedDragTypes?: 'all' | Array<string | symbol>,
@@ -173,6 +173,14 @@ export interface DroppableCollectionProps {
    * Handler that is called when items are reordered via drag in the source collection.
    */
   onReorder?: (e: DroppableCollectionReorderEvent) => void,
+  /**
+   * A function returning whether a given target in the droppable collection is a valid "on" drop target for the current drag types.
+   */
+  shouldAcceptItemDrop?: (target: ItemDropTarget, types: DragTypes) => boolean
+}
+
+
+export interface DroppableCollectionProps extends UtilityOptions {
   /** Handler that is called when a valid drag enters a drop target. */
   onDropEnter?: (e: DroppableCollectionEnterEvent) => void,
   /** Handler that is called after a valid drag is held over a drop target for a period of time. */
@@ -184,10 +192,7 @@ export interface DroppableCollectionProps {
    * drop handlers such as `onInsert`, and `onItemDrop`.
    */
   onDrop?: (e: DroppableCollectionDropEvent) => void,
-  /**
-   * A function returning whether a given target in the droppable collection is a valid "on" drop target for the current drag types.
-   */
-  shouldAcceptItemDrop?: (target: ItemDropTarget, types: DragTypes) => boolean,
+
   /**
    * A function returning the drop operation to be performed when items matching the given types are dropped
    * on the drop target.
